@@ -9,7 +9,7 @@ import categoryService from "../categoryService";
 export default function CourseCategory() {
   const [showMyModal, setShowMyModal] = useState(false);
   const [action, setAction] = useState("");
-  const [data, setData] = useState({});
+  const [category, setCategory] = useState({});
   const [categories, setCategories] = useState([]);
 
   const handleOnclose = () => {
@@ -26,7 +26,7 @@ export default function CourseCategory() {
   }, []);
 
   const handleDelete = (id) => {
-    return categoryService.deleteCourseCategory(id).then(() => {
+    categoryService.deleteCourseCategory(id).then(() => {
       categoryService.getAllCourseCategory().then((values) => {
         setCategories(values);
       });
@@ -35,7 +35,7 @@ export default function CourseCategory() {
 
   const handleGetId = (id) => {
     categoryService.getCourseCategory(id).then((c) => {
-      setData(c);
+      setCategory(c);
       setAction("edit");
       setShowMyModal(true);
     });
@@ -161,7 +161,7 @@ export default function CourseCategory() {
                 </tr>
               </thead>
               <tbody>
-                {categories.map((item, idx) => (
+                {categories?.map((item, idx) => (
                   <tr key={idx} className="bg-purple border-b ">
                     <th
                       scope="row"
@@ -174,6 +174,7 @@ export default function CourseCategory() {
                         className="rounded-full w-10 h-10"
                         src={item.icon}
                         alt={""}
+                        loading="lazy"
                       />
                     </td>
                     <td className="px-6 py-4">{item.name}</td>
@@ -214,8 +215,8 @@ export default function CourseCategory() {
           <ModalPopUp
             onClose={handleOnclose}
             visible={showMyModal}
-            data={data}
-            setData={setData}
+            category={category}
+            setCategory={setCategory}
             action={action}
           />
         </div>
